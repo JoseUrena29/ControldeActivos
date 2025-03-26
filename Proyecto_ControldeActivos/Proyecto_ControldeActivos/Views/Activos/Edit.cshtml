@@ -1,0 +1,62 @@
+﻿@model Proyecto_ControldeActivos.Models.Activos
+
+@{
+    ViewBag.Title = "Editar Activo";
+}
+
+<div class="container d-flex justify-content-center align-items-center vh-200">
+    <div class="card shadow-lg border-0" style="width: 50%;">
+        <div class="card-header bg-primary text-white text-center">
+            <h2 class="mb-0">Editar Activo</h2>
+        </div>
+
+        <div class="card-body">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <h4 class="text-primary text-center">Información del Activo</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "form-label fw-bold" })
+                    @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "form-label fw-bold" })
+                    @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", rows = "3" })
+                    @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.FechaAdquisicion, htmlAttributes: new { @class = "form-label fw-bold" })
+                    @Html.EditorFor(model => model.FechaAdquisicion, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                    @Html.ValidationMessageFor(model => model.FechaAdquisicion, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Estado, htmlAttributes: new { @class = "form-label fw-bold" })
+                    @Html.DropDownListFor(model => model.Estado, new SelectList(new[] { "Activo", "Inactivo", "En Mantenimiento" }), "Seleccione un estado", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Estado, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save"></i> Guardar Cambios
+                    </button>
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Volver a la lista
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

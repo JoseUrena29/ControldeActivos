@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Gráfico de Activos";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center">Gráfico de Activos por Estado</h1>
+    <canvas id="activoChart" width="400" height="200"></canvas>
+</div>
+
+<!-- Incluir Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Obtener el contexto del canvas donde se dibujará el gráfico
+    var ctx = document.getElementById('activoChart').getContext('2d');
+
+    // Crear el gráfico utilizando Chart.js
+    var activoChart = new Chart(ctx, {
+        type: 'bar',  // Tipo de gráfico: barra
+        data: {
+            labels: @Html.Raw(Json.Encode(ViewBag.Estados)), // Etiquetas de los estados
+            datasets: [{
+                label: 'Cantidad de Activos',
+                data: @Html.Raw(Json.Encode(ViewBag.Cantidades)), // Datos de las cantidades
+                backgroundColor: 'rgba(54, 162, 235, 0.2)', // Color del fondo de las barras
+                borderColor: 'rgba(54, 162, 235, 1)', // Color de borde
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+

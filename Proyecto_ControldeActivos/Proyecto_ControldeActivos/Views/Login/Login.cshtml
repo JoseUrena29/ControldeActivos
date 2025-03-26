@@ -1,0 +1,127 @@
+﻿@model Proyecto_ControldeActivos.Models.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<!-- Contenedor principal con fondo atractivo -->
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh; padding-top: 50px;">
+    <!-- Card para el formulario de login -->
+    <div class="card shadow-lg border-0" style="max-width: 450px; width: 100%; background: #ffffff;">
+        <!-- Cabecera de la tarjeta -->
+        <div class="card-header text-center py-4" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
+            <h2 class="mb-0">Iniciar Sesión</h2>
+            <h3 class="text-muted">Accede a tu cuenta</h3>
+        </div>
+
+        <!-- Cuerpo de la tarjeta -->
+        <div class="card-body">
+            @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <!-- Mensajes de validación -->
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                <!-- Campo de usuario -->
+                <div class="mb-4 input-group">
+                    <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                    @Html.TextBoxFor(model => model.Username, new { @class = "form-control form-control-lg", placeholder = "Ingrese su usuario" })
+                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Campo de contraseña -->
+                <div class="mb-4 input-group">
+                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                    @Html.PasswordFor(model => model.Password, new { @class = "form-control form-control-lg", placeholder = "Ingrese su contraseña" })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <!-- Botón de inicio de sesión -->
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        Iniciar sesión
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Estilos adicionales -->
+<style>
+    body {
+        background: linear-gradient(135deg, #6e7dff, #5560ea);
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        font-size: 16px;
+        padding: 12px 16px;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            box-shadow: 0 0 8px rgba(56, 128, 255, 0.6);
+            border-color: #3887ff;
+        }
+
+    .input-group-text {
+        background-color: #f1f1f1;
+        border: 1px solid #ddd;
+        border-right: none;
+        border-radius: 5px 0 0 5px;
+    }
+
+    .btn {
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 5px;
+        padding: 15px;
+        background: #007bff;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+    .card-header {
+        background: linear-gradient(135deg, #003366, #3366cc); /* Azul oscuro a azul brillante */
+        color: white;
+    }
+
+    .card-footer {
+        background: #f9f9f9;
+    }
+
+    .text-center a {
+        text-decoration: none;
+        font-weight: bold;
+        color: #007bff;
+    }
+
+        .text-center a:hover {
+            text-decoration: underline;
+        }
+
+    .container {
+        max-width: 100%;
+    }
+
+    .card-body {
+        padding: 30px;
+    }
+</style>
+

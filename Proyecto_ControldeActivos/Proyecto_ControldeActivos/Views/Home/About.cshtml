@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Control de Activos";
+}
+
+<main class="container py-5">
+    <!-- Título principal -->
+    <div class="text-center mb-4">
+        <h1 class="display-4 text-primary">Control de Activos</h1>
+        <p class="lead text-muted">Gestiona y controla todos los activos de tu empresa de manera eficiente.</p>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-lg border-0 rounded">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title">¿Qué es el Control de Activos?</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        El control de activos es un proceso esencial para gestionar y rastrear todos los activos físicos y tecnológicos de la empresa, asegurando su buen uso, mantenimiento y reducción de riesgos.
+                    </p>
+                    <a href="@Url.Action("Index", "Activos")" class="btn btn-primary">Ver Activos</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-lg border-0 rounded">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title">Beneficios de un buen control</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">Mejora la eficiencia operativa</li>
+                        <li class="list-group-item">Minimiza pérdidas y riesgos</li>
+                        <li class="list-group-item">Optimiza los costos de mantenimiento</li>
+                        <li class="list-group-item">Aumenta la vida útil de los activos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instrucciones adicionales -->
+    <div class="text-center mt-5">
+        <p class="lead">¿Necesitas ayuda para administrar los activos? ¡Contáctanos para más información!</p>
+        <a href="@Url.Action("Contact", "Home")" class="btn btn-info btn-lg">Contactar</a>
+    </div>
+</main>

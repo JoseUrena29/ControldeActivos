@@ -1,0 +1,112 @@
+﻿@model IEnumerable<Proyecto_ControldeActivos.Models.Activos>
+
+@{
+    ViewBag.Title = "Control de Activos";
+}
+
+<!-- Botón para Cerrar Sesión -->
+<div class="d-flex justify-content-end mb-3 hidden-print">
+    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">
+        <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+    </button>
+</div>
+
+<h1 class="text-center text-primary my-4">Lista de Activos</h1>
+
+<!-- Modal de Confirmación de Cerrar Sesión -->
+<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="logoutModalLabel">Confirmación de Cerrar Sesión</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas cerrar sesión?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <a href="@Url.Action("Logout", "Login")" class="btn btn-danger">Cerrar sesión</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Campo de búsqueda -->
+<div class="d-flex justify-content-end mb-3 hidden-print">
+    <form method="get" action="@Url.Action("Index")">
+        <div class="input-group">
+            <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control" placeholder="Buscar por nombre, descripción o estado..." />
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-search"></i> Buscar
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Contenedor para alinear los botones -->
+<div class="d-flex justify-content-between mb-3 hidden-print">
+    <!-- Botón para crear un nuevo activo -->
+    <div>
+        @Html.ActionLink("Crear Nuevo Activo", "Create", "", new { @class = "btn btn-success" })
+    </div>
+
+    <!-- Botón para ir a la vista de Gráfico de Activos -->
+    <div>
+        <a href="@Url.Action("GraficoActivos", "Activos")" class="btn btn-info hidden-print">
+            <i class="bi bi-bar-chart-line"></i> Ver Gráfico de Activos
+        </a>
+        <button class="hidden-print" onclick="window.print()">
+            Exportar PDF 
+        </button>
+    </div>
+</div>
+
+<!-- Tabla de activos -->
+<table class="table table-bordered table-striped table-hover">
+    <thead class="table-light">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+            <th>@Html.DisplayNameFor(model => model.Descripcion)</th>
+            <th>@Html.DisplayNameFor(model => model.FechaAdquisicion)</th>
+            <th>@Html.DisplayNameFor(model => model.Estado)</th>
+            <th class="text-center">Categoría</th>
+            <th class="text-center hidden-print">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                <td>@Html.DisplayFor(modelItem => item.FechaAdquisicion)</td>
+                <td>
+                    <span class="badge @(item.Estado == "Activo" ? "bg-success" : item.Estado == "Inactivo" ? "bg-danger" : "bg-warning")">
+                        @Html.DisplayFor(modelItem => item.Estado)
+                    </span>
+                </td>
+                <td class="text-center col-auto">
+                </td>
+                <td class="text-center col-auto hidden-print">
+
+                    <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-primary btn-sm">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                    <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

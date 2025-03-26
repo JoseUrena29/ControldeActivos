@@ -1,0 +1,48 @@
+﻿@model Proyecto_ControldeActivos.Models.Activos
+
+@{
+    ViewBag.Title = "Detalles del Activo";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white text-center">
+            <h2 class="mb-0">Detalles del Activo</h2>
+        </div>
+        <div class="card-body">
+            <h4 class="text-primary text-center">Información del Activo</h4>
+            <hr />
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>@Html.DisplayNameFor(model => model.Nombre):</strong></p>
+                    <p class="text-muted">@Html.DisplayFor(model => model.Nombre)</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>@Html.DisplayNameFor(model => model.Descripcion):</strong></p>
+                    <p class="text-muted">@Html.DisplayFor(model => model.Descripcion)</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>@Html.DisplayNameFor(model => model.FechaAdquisicion):</strong></p>
+                    <p class="text-muted"><i class="bi bi-calendar-event"></i> @Html.DisplayFor(model => model.FechaAdquisicion)</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>@Html.DisplayNameFor(model => model.Estado):</strong></p>
+                    <p class="text-muted">
+                        <span class="badge @(Model.Estado == "Activo" ? "bg-success" : "bg-danger")">
+                            @Html.DisplayFor(model => model.Estado)
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-center">
+            <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning">
+                <i class="bi bi-pencil"></i> Editar
+            </a>
+            <a href="@Url.Action("Index")" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Volver a la lista
+            </a>
+        </div>
+    </div>
+</div>
