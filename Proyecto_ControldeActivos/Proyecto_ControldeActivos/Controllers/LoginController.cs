@@ -1,5 +1,6 @@
 ﻿// Controllers/LoginController.cs
 using Proyecto_ControldeActivos.Models;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Proyecto_ControldeActivos.Controllers
@@ -19,20 +20,43 @@ namespace Proyecto_ControldeActivos.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Lógica para verificar las credenciales (esto es solo un ejemplo)
-                if (model.Username == "admin" && model.Password == "admin")
-                {
-                    // Redirigir al usuario a la página de inicio u otra página
-                    return RedirectToAction("Index", "Activos");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Usuario o contraseña incorrectos.");
-                }
-            }
+                //// Lógica para verificar las credenciales (esto es solo un ejemplo)
+                //if (model.Username == "admin" && model.Password == "admin")
+                //{
+                //    // Redirigir al usuario a la página de inicio u otra página
+                //    return RedirectToAction("Index", "Activos");
+                //}
+                //else
+                //{
+                //    ModelState.AddModelError("", "Usuario o contraseña incorrectos.");
+                //}
 
+                using (DbModels context = new DbModels())
+                {
+                    // Find the user by username
+                    var user = context.Usuarios.SingleOrDefault(u => u.Usuario == model.Username);
+
+
+                    if (user != null)
+                    {
+                        // Validate the password
+
+                        if (user.Contrasena.Trim() == model.Password)
+                        {
+                            // Set session or cookie for authentication
+                            Session["UserId"] = user.ID;
+                            Session["Username"] = user.Usuario;
+
+                            return RedirectToAction("Index", "Activos");
+                        }
+                    }
+                }
+                ModelState.AddModelError("", "Usuario o contraseña incorrectos.");
+
+            }
             return View(model);
         }
+
 
         // GET: Login/Logout
         public ActionResult Logout()

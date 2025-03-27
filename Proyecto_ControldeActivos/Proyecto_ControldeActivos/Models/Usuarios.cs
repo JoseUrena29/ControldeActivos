@@ -12,12 +12,11 @@ namespace Proyecto_ControldeActivos.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Activos
+    public partial class Usuarios
     {
-        public int Id { get; set; }
-        public string Nombre { get; set; }
-        public string Descripcion { get; set; }
-        public System.DateTime FechaAdquisicion { get; set; }
-        public string Estado { get; set; }
+        public int ID { get; set; }
+        public string Usuario { get; set; }
+        public string Contrasena { get; set; }
+        public string Rol { get; set; }
     }
 }
