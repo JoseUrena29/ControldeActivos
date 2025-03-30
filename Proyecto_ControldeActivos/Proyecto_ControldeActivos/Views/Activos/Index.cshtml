@@ -4,11 +4,23 @@
     ViewBag.Title = "Control de Activos";
 }
 
-<!-- Botón para Cerrar Sesión -->
-<div class="d-flex justify-content-end mb-3 hidden-print">
-    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">
-        <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
-    </button>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <!-- User Information with Avatar -->
+    <div class="d-flex align-items-center">
+        <img src="https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg" alt="Avatar" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+        <div>
+            <p class="mb-0"><strong>Bienvenido:</strong> @Session["username"]</p>
+          
+        </div>
+    </div>
+
+    <!-- Logout Button -->
+    <div>
+        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">
+            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+        </button>
+    </div>
 </div>
 
 <h1 class="text-center text-primary my-4">Lista de Activos</h1>
@@ -48,7 +60,23 @@
 <div class="d-flex justify-content-between mb-3 hidden-print">
     <!-- Botón para crear un nuevo activo -->
     <div>
-        @Html.ActionLink("Crear Nuevo Activo", "Create", "", new { @class = "btn btn-success" })
+        @if (Session["rol"] != null)
+        {
+            if (Session["rol"].ToString() == "admin")
+            {
+                @Html.ActionLink("Crear Nuevo Activo", "Create", "", new { @class = "btn btn-success" })
+            }
+            else
+            {
+                <p class="text-danger">Debes iniciar sesión como administrador para realizar esta acción.</p>
+            }
+        }
+        else
+        {
+            <p class="text-danger">Debes iniciar sesión como administrador para realizar acciones.</p>
+        }
+
+    
     </div>
 
     <!-- Botón para ir a la vista de Gráfico de Activos -->

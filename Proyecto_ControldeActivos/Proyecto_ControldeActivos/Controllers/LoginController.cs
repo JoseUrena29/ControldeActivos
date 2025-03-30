@@ -45,7 +45,15 @@ namespace Proyecto_ControldeActivos.Controllers
                         {
                             // Set session or cookie for authentication
                             Session["UserId"] = user.ID;
-                            Session["Username"] = user.Usuario;
+                            Session["Username"] = user.Usuario.Trim();
+                            Session["Rol"] = user.Rol.Trim();
+
+                            //ViewBag.username = Session["Username"];
+                            //ViewBag.rol = Session["Rol"];
+
+                            TempData["username"] = Session["Username"];
+                            TempData["rol"] = Session["Rol"];
+
 
                             return RedirectToAction("Index", "Activos");
                         }
@@ -68,5 +76,49 @@ namespace Proyecto_ControldeActivos.Controllers
             // Redirigir a la página de login después de cerrar sesión
             return RedirectToAction("Login", "Login");
         }
+
+        public ActionResult Registrar()
+        {
+            return View();
+        }
+
+        // POST: RegistrarUsuario
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RegistrarUsuario(UserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (DbModels context = new DbModels())
+                {
+                    // Create a new user entity based on the model
+                    var nuevoUsuario = new Usuarios
+                    {
+                        Usuario = model.Usuario,
+                        Contrasena = model.Contrasena,
+                        Rol = model.Rol
+                    };
+
+                    // Save the new user to the database
+                    context.Usuarios.Add(nuevoUsuario);
+                    context.SaveChanges();
+                }
+
+                // Optionally, set a success message
+                TempData["SuccessMessage"] = "Usuario registrado exitosamente.";
+
+                // Redirect to an appropriate page (e.g., list of users)
+                return RedirectToAction("Registrar", "Login");
+            }
+
+            // If the model state is invalid, return the view with errors
+            return View(model);
+        }
+
+
+
+
+
+
     }
 }

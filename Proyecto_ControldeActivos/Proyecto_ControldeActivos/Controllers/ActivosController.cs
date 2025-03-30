@@ -33,6 +33,9 @@ namespace Proyecto_ControldeActivos.Controllers
         // GET: Activos
         public ActionResult Index(string searchString)
         {
+            var username = Session["Username"];
+            var rol = Session["Rol"];
+
             using (DbModels context = new DbModels())
             {
                 // Obtén todos los activos

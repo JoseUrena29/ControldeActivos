@@ -19,10 +19,10 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="Usuario" Type="nchar" MaxLength="50" />
-          <Property Name="Contrasena" Type="nchar" MaxLength="50" />
-          <Property Name="Rol" Type="nchar" MaxLength="50" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Usuario" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Contrasena" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Rol" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityContainer Name="DB_ControldeActivosModelStoreContainer">
           <EntitySet Name="Activos" EntityType="Self.Activos" Schema="dbo" store:Type="Tables" />
@@ -51,9 +51,9 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Usuario" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-          <Property Name="Contrasena" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
-          <Property Name="Rol" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Usuario" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Contrasena" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Rol" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>

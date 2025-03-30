@@ -1,22 +1,22 @@
-﻿@model Proyecto_ControldeActivos.Models.LoginModel
+﻿@model Proyecto_ControldeActivos.Models.UserModel
 
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "Registrar Usuario";
 }
 
 <!-- Contenedor principal con fondo atractivo -->
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh; padding-top: 50px;">
-    <!-- Card para el formulario de login -->
+    <!-- Card para el formulario de registro -->
     <div class="card shadow-lg border-0" style="max-width: 450px; width: 100%; background: #ffffff;">
         <!-- Cabecera de la tarjeta -->
         <div class="card-header text-center py-4" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
-            <h2 class="mb-0">Iniciar Sesión</h2>
-            <h3 class="text-muted">Accede a tu cuenta</h3>
+            <h2 class="mb-0">Registrar Usuario</h2>
+            <h3 class="text-muted">Crear una nueva cuenta</h3>
         </div>
 
         <!-- Cuerpo de la tarjeta -->
         <div class="card-body">
-            @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+            @using (Html.BeginForm("RegistrarUsuario", "Login", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
 
@@ -26,43 +26,36 @@
                 <!-- Campo de usuario -->
                 <div class="mb-4 input-group">
                     <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
-                    @Html.TextBoxFor(model => model.Username, new { @class = "form-control form-control-lg", placeholder = "Ingrese su usuario" })
-                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(model => model.Usuario, new { @class = "form-control form-control-lg", placeholder = "Ingrese el nombre de usuario" })
+                    @Html.ValidationMessageFor(model => model.Usuario, "", new { @class = "text-danger" })
                 </div>
 
                 <!-- Campo de contraseña -->
                 <div class="mb-4 input-group">
                     <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                    @Html.PasswordFor(model => model.Password, new { @class = "form-control form-control-lg", placeholder = "Ingrese su contraseña" })
-                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    @Html.PasswordFor(model => model.Contrasena, new { @class = "form-control form-control-lg", placeholder = "Ingrese la contraseña" })
+                    @Html.ValidationMessageFor(model => model.Contrasena, "", new { @class = "text-danger" })
                 </div>
 
-                <!-- Botón de inicio de sesión -->
-                <div class="text-center mt-3">
-                    <button type="submit" class="btn btn-primary btn-lg w-100">
-                        Iniciar sesión
-                    </button>
-
-
-
+                <!-- Campo de rol -->
+                <div class="mb-4 input-group">
+                    <span class="input-group-text"><i class="bi bi-gear-fill"></i></span>
+                    @Html.DropDownListFor(model => model.Rol, new SelectList(new[] { "admin", "user" }), "Seleccione un rol", new { @class = "form-control form-control-lg" })
+                    @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
                 </div>
-                <br />
 
                 <!-- Botón de registro -->
-                <a href="@Url.Action("Registrar", "Login")" class="btn btn-secondary btn-lg w-100">
-                    Registrarse
-                </a>
-
-
-
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-success btn-lg w-100">
+                        Registrar
+                    </button>
+                </div>
             }
-        </div>
-
         </div>
     </div>
 </div>
 
-<!-- Estilos adicionales -->
+<!-- Manteniendo estilos adicionales -->
 <style>
     body {
         background: linear-gradient(135deg, #6e7dff, #5560ea);
@@ -101,13 +94,13 @@
         font-weight: bold;
         border-radius: 5px;
         padding: 15px;
-        background: #007bff;
+        background: #28a745;
         border: none;
         transition: all 0.3s ease;
     }
 
         .btn:hover {
-            background-color: #0056b3;
+            background-color: #218838;
             transform: translateY(-2px);
         }
 
@@ -115,20 +108,6 @@
         background: linear-gradient(135deg, #003366, #3366cc); /* Azul oscuro a azul brillante */
         color: white;
     }
-
-    .card-footer {
-        background: #f9f9f9;
-    }
-
-    .text-center a {
-        text-decoration: none;
-        font-weight: bold;
-        color: #007bff;
-    }
-
-        .text-center a:hover {
-            text-decoration: underline;
-        }
 
     .container {
         max-width: 100%;
