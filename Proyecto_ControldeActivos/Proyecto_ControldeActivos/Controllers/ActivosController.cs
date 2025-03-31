@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -9,7 +10,19 @@ namespace Proyecto_ControldeActivos.Controllers
 {
     public class ActivosController : Controller
     {
-            public ActionResult GraficoActivos()
+            public ActionResult CheckRol()
+        {
+            if (Session["rol"] == null || Session["rol"].ToString() != "admin")
+            {
+                TempData["ErrorMessage"] = "No tienes permiso para realizar esta acción.";
+                return RedirectToAction("Index", "Activos");
+            }
+
+            return null;
+        }
+
+
+        public ActionResult GraficoActivos()
             {
                 using (DbModels context = new DbModels())
                 {
@@ -69,6 +82,9 @@ namespace Proyecto_ControldeActivos.Controllers
         // GET: Activos/Create
         public ActionResult Create()
         {
+            var result = CheckRol();
+            if (result != null) return result;
+
             return View();
         }
 
@@ -76,6 +92,9 @@ namespace Proyecto_ControldeActivos.Controllers
         [HttpPost]
         public ActionResult Create(Activos activos)
         {
+            var result = CheckRol();
+            if (result != null) return result;
+
             try
             {
                 using (DbModels context = new DbModels())
@@ -95,6 +114,10 @@ namespace Proyecto_ControldeActivos.Controllers
         // GET: Activos/Edit/5
         public ActionResult Edit(int id)
         {
+
+            var result = CheckRol();
+            if (result != null) return result;
+
             using (DbModels context = new DbModels())
             {
                 return View(context.Activos.Where(x => x.Id == id).FirstOrDefault());
@@ -105,6 +128,10 @@ namespace Proyecto_ControldeActivos.Controllers
         [HttpPost]
         public ActionResult Edit(int id, Activos activos)
         {
+
+            var result = CheckRol();
+            if (result != null) return result;
+
             try
             {
                 using (DbModels context = new DbModels())
@@ -124,6 +151,9 @@ namespace Proyecto_ControldeActivos.Controllers
         // GET: Activos/Delete/5
         public ActionResult Delete(int id)
         {
+            var result = CheckRol();
+            if (result != null) return result;
+
             using (DbModels context = new DbModels())
             {
                 return View(context.Activos.Where(x => x.Id == id).FirstOrDefault());
@@ -134,6 +164,9 @@ namespace Proyecto_ControldeActivos.Controllers
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
+            var result = CheckRol();
+            if (result != null) return result;
+
             try
             {
                 using (DbModels context = new DbModels())
