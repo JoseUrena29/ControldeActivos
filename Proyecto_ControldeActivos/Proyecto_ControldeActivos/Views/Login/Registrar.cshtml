@@ -1,79 +1,76 @@
 ﻿@model Proyecto_ControldeActivos.Models.UserModel
 
 @{
-    ViewBag.Title = "Registrar Usuario";
+    ViewBag.Title = "Login";
 }
 
-<!-- Contenedor principal con fondo atractivo -->
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh; padding-top: 50px;">
-    <!-- Card para el formulario de registro -->
-    <div class="card shadow-lg border-0" style="max-width: 450px; width: 100%; background: #ffffff;">
-        <!-- Cabecera de la tarjeta -->
-        <div class="card-header text-center py-4" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
-            <h2 class="mb-0">Registrar Usuario</h2>
-            <h3 class="text-muted">Crear una nueva cuenta</h3>
-        </div>
+<main class="container align-self-auto animate__animated animate__fadeIn" style="margin: 15vh 0px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <!-- Cabecera de la tarjeta -->
+            <div class="card-header text-center py-4 text-white" style="background: linear-gradient(135deg, #003366, #3366cc);">
+                <h2 class="mb-1">Registrarme</h2>
+                <h3 class="text-light">Crear usuario para acceder</h3>
+            </div>
+            <div class="card shadow">
+                <!-- Cuerpo de la tarjeta -->
+                <div class="card-body p-4">
+                    @using (Html.BeginForm("RegistrarUsuario", "Login", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
 
-        <!-- Cuerpo de la tarjeta -->
-        <div class="card-body">
-            @using (Html.BeginForm("RegistrarUsuario", "Login", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
+                        <!-- Mensajes de validación -->
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
-                <!-- Mensajes de validación -->
-                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+                        <!-- Campo de usuario -->
+                        <div class="mb-4 input-group">
+                            <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                            @Html.TextBoxFor(model => model.Usuario, new { @class = "form-control form-control-lg", placeholder = "Ingrese el nombre de usuario" })
+                            @Html.ValidationMessageFor(model => model.Usuario, "", new { @class = "text-danger" })
+                        </div>
 
-                <!-- Campo de usuario -->
-                <div class="mb-4 input-group">
-                    <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
-                    @Html.TextBoxFor(model => model.Usuario, new { @class = "form-control form-control-lg", placeholder = "Ingrese el nombre de usuario" })
-                    @Html.ValidationMessageFor(model => model.Usuario, "", new { @class = "text-danger" })
+                        <!-- Campo de contraseña -->
+                        <div class="mb-4 input-group">
+                            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                            @Html.PasswordFor(model => model.Contrasena, new { @class = "form-control form-control-lg", placeholder = "Ingrese la contraseña" })
+                            @Html.ValidationMessageFor(model => model.Contrasena, "", new { @class = "text-danger" })
+                        </div>
+
+                        <!-- Campo de rol -->
+                        <div class="mb-4 input-group">
+                            <span class="input-group-text"><i class="bi bi-gear-fill"></i></span>
+                            @Html.DropDownListFor(model => model.Rol, new SelectList(new[] { "admin", "user" }), "Seleccione un rol", new { @class = "form-control form-control-lg" })
+                            @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
+                        </div>
+
+                        <!-- Botón de registro -->
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-success btn-lg w-100">
+                                Registrar
+                            </button>
+                        </div>
+                    }
                 </div>
-
-                <!-- Campo de contraseña -->
-                <div class="mb-4 input-group">
-                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                    @Html.PasswordFor(model => model.Contrasena, new { @class = "form-control form-control-lg", placeholder = "Ingrese la contraseña" })
-                    @Html.ValidationMessageFor(model => model.Contrasena, "", new { @class = "text-danger" })
-                </div>
-
-                <!-- Campo de rol -->
-                <div class="mb-4 input-group">
-                    <span class="input-group-text"><i class="bi bi-gear-fill"></i></span>
-                    @Html.DropDownListFor(model => model.Rol, new SelectList(new[] { "admin", "user" }), "Seleccione un rol", new { @class = "form-control form-control-lg" })
-                    @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
-                </div>
-
-                <!-- Botón de registro -->
-                <div class="text-center mt-3">
-                    <button type="submit" class="btn btn-success btn-lg w-100">
-                        Registrar
-                    </button>
-                </div>
-            }
+            </div>
         </div>
     </div>
-</div>
+</main>
 
-<!-- Manteniendo estilos adicionales -->
+<!-- Estilos adicionales -->
 <style>
     body {
         background: linear-gradient(135deg, #6e7dff, #5560ea);
         font-family: 'Arial', sans-serif;
-        margin: 0;
-        padding: 0;
     }
 
     .card {
-        border-radius: 10px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
     }
 
     .form-control {
         border-radius: 5px;
         font-size: 16px;
-        padding: 12px 16px;
+        padding: 12px;
         transition: all 0.3s ease;
     }
 
@@ -84,7 +81,6 @@
 
     .input-group-text {
         background-color: #f1f1f1;
-        border: 1px solid #ddd;
         border-right: none;
         border-radius: 5px 0 0 5px;
     }
@@ -94,27 +90,22 @@
         font-weight: bold;
         border-radius: 5px;
         padding: 15px;
-        background: #28a745;
-        border: none;
         transition: all 0.3s ease;
     }
 
         .btn:hover {
-            background-color: #218838;
+            background-color: #0056b3;
             transform: translateY(-2px);
         }
 
-    .card-header {
-        background: linear-gradient(135deg, #003366, #3366cc); /* Azul oscuro a azul brillante */
-        color: white;
+    .text-center a {
+        font-weight: bold;
+        color: #007bff;
+        text-decoration: none;
     }
 
-    .container {
-        max-width: 100%;
-    }
-
-    .card-body {
-        padding: 30px;
-    }
+        .text-center a:hover {
+            text-decoration: underline;
+        }
 </style>
 

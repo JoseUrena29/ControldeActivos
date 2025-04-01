@@ -6,48 +6,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <!-- NProgress CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="~/Content/Site.css" rel="stylesheet" />
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient bg-primary shadow-sm hidden-print">
+    <!-- Modal de Confirmación de Cerrar Sesión -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Confirmación de Cerrar Sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas cerrar sesión?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="@Url.Action("Logout", "Login")" class="btn btn-danger">Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient bg-primary shadow-sm hidden-print sticky-top">
         <div class="container">
             <!-- Logo o nombre -->
             @Html.ActionLink("Control de Activos", "Index", "Activos", new { area = "" }, new { @class = "navbar-brand fs-3 fw-bold" })
 
             <!-- Botón de navegación en pantallas pequeñas -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegación">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegación">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <!-- Menú de navegación -->
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        @Html.ActionLink("Inicio", "Index", "Activos", new { area = "" }, new { @class = "nav-link active fs-5" })
+                        <a class="nav-link fs-5" href="@Url.Action("Index", "Activos")">
+                            <i class="bi bi-house-door"></i> Inicio
+                        </a>
                     </li>
                     <li class="nav-item">
-                        @Html.ActionLink("Acerca de", "About", "Home", new { area = "" }, new { @class = "nav-link fs-5" })
+                        <a class="nav-link fs-5" href="@Url.Action("About", "Home")">
+                            <i class="bi bi-info-circle"></i> Acerca de
+                        </a>
                     </li>
                     <li class="nav-item">
-                        @Html.ActionLink("Contacto", "Contact", "Home", new { area = "" }, new { @class = "nav-link fs-5" })
+                        <a class="nav-link fs-5" href="@Url.Action("Contact", "Home")">
+                            <i class="bi bi-envelope"></i> Contacto
+                        </a>
                     </li>
+                </ul>
+
+                <ul class="navbar-nav">
+                    @if (Session["UserId"] != null)
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center active" href="#" id="navbarDropdownDataUser"
+                               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://img.freepik.com/premium-vector/young-smiling-man-avatar-man-with-brown-beard-mustache-hair-wearing-yellow-sweater-sweatshirt-3d-vector-people-character-illustration-cartoon-minimal-style_365941-860.jpg"
+                                     alt="Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px;">
+                                <span class="fs-5">@Session["username"]</span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownDataUser">
+                                <li>@*@Html.ActionLink("Mi Perfil", "Index", "MyProfile", new { area = "" }, new { @class = "dropdown-item" })*@</li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                        <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link fs-5" href="@Url.Action("Login", "")">
+                                <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fs-5" href="@Url.Action("Registrar", "Login")">
+                                <i class="bi bi-person-plus"></i> Registrarme
+                            </a>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
     </nav>
-    <div class="container body-content ">
+
+    <div class="container flex-grow-1 py-4 min-vh-100">
         @RenderBody()
-        <hr class="hidden-print"/>
-        <footer class="hidden-print">
-            <p>&copy; @DateTime.Now.Year - Control de Activos</p>
-        </footer>
     </div>
 
+    <footer class="bgbg-gradient bg-primary shadow-sm hidden-print text-white text-center py-3 sticky-bottom">
+        <p class="mb-0">&copy; @DateTime.Now.Year - Control de Activos</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <!-- NProgress JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+    <script src="~/Scripts/layout.js"></script>
+
 </body>
 </html>

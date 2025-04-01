@@ -10,6 +10,10 @@ namespace Proyecto_ControldeActivos.Controllers
         // GET: Login/Login
         public ActionResult Login()
         {
+            if (Session["UserId"] != null)
+            {
+                return RedirectToAction("Index", "Activos");
+            }
             return View();
         }
 

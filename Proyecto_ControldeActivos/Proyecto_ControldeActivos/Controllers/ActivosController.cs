@@ -1,17 +1,23 @@
 ﻿using Proyecto_ControldeActivos.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Proyecto_ControldeActivos.Controllers
 {
     public class ActivosController : Controller
     {
-            public ActionResult CheckRol()
+        public ActionResult CheckRol()
         {
+            var username = Session["Username"];
+            var rol = Session["Rol"];
+
+            // Verifica la sessión
+            if (username == null || rol == null)
+            {
+                return Redirect("/");
+            }
+
             if (Session["rol"] == null || Session["rol"].ToString() != "admin")
             {
                 TempData["ErrorMessage"] = "No tienes permiso para realizar esta acción.";
@@ -44,28 +50,46 @@ namespace Proyecto_ControldeActivos.Controllers
             }
 
         // GET: Activos
-        public ActionResult Index(string searchString)
+        public ActionResult Index(string searchString, string status, DateTime? startDate, DateTime? endDate)
         {
-            var username = Session["Username"];
-            var rol = Session["Rol"];
+            var result = CheckRol();
+            if (result != null) return result;
 
             using (DbModels context = new DbModels())
             {
                 // Obtén todos los activos
                 var activos = context.Activos.AsQueryable();
 
-                // Si searchString no es nulo o vacío, filtra los activos por nombre, descripción o estado exactos
-                if (!String.IsNullOrEmpty(searchString))
+                // Filtrar por nombre, descripción o estado si searchString no está vacío
+                if (!string.IsNullOrEmpty(searchString))
                 {
-                    activos = activos.Where(a => a.Nombre == searchString
-                                               || a.Descripcion == searchString
-                                               || a.Estado == searchString);
+                    activos = activos.Where(a => a.Nombre.Contains(searchString)
+                                               || a.Descripcion.Contains(searchString));
                 }
 
-                // Pasa el valor de búsqueda a la vista
-                ViewBag.SearchString = searchString;
+                // Filtrar por estado si se selecciona uno
+                if (!string.IsNullOrEmpty(status))
+                {
+                    activos = activos.Where(a => a.Estado == status);
+                }
 
-                // Devuelve la vista con los activos filtrados o todos los activos si no se pasa un filtro
+                // Filtrar por fecha de adquisición si las fechas están proporcionadas
+                if (startDate.HasValue)
+                {
+                    activos = activos.Where(a => a.FechaAdquisicion >= startDate.Value);
+                }
+
+                if (endDate.HasValue)
+                {
+                    activos = activos.Where(a => a.FechaAdquisicion <= endDate.Value);
+                }
+
+                // Pasar valores a la vista
+                ViewBag.SearchString = searchString;
+                ViewBag.Status = status;
+                ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+                ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
+
                 return View(activos.ToList());
             }
         }

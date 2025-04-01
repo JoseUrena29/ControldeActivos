@@ -12,20 +12,27 @@
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+#nprogress .bar {
+    background: white !important;
 }
 
+#nprogress .spinner {
+}
+
+#nprogress .spinner-icon { 
+    border-top-color: white !important;
+    border-left-color: white !important;
+}
 
 @media print {
-    .hidden-print
+    * {
+        position: relative !important;
+        top: 0 !important;
+    }
+    .hidden-print {
+        display: none !important;
+    }
 
-{
-    display: none !important;
-}
 
 }
 
@@ -34,4 +41,5 @@ textarea {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
+
 }
