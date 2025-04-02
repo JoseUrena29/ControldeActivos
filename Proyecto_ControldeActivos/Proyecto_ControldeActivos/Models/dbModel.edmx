@@ -5,6 +5,19 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DB_ControldeActivosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ActivoArchivos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdActivo" Type="int" Nullable="false" />
+          <Property Name="NombreArchivo" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TipoArchivo" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ExtArchivo" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TamanoArchivo" Type="int" Nullable="false" />
+          <Property Name="FechaCreacion" Type="date" Nullable="false" />
+          <Property Name="RutaArchivo" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
         <EntityType Name="Activos">
           <Key>
             <PropertyRef Name="Id" />
@@ -24,9 +37,26 @@
           <Property Name="Contrasena" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Rol" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <Association Name="FK_ActivoArchivos_Activos">
+          <End Role="Activos" Type="Self.Activos" Multiplicity="1" />
+          <End Role="ActivoArchivos" Type="Self.ActivoArchivos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActivoArchivos">
+              <PropertyRef Name="IdActivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="DB_ControldeActivosModelStoreContainer">
+          <EntitySet Name="ActivoArchivos" EntityType="Self.ActivoArchivos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Activos" EntityType="Self.Activos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ActivoArchivos_Activos" Association="Self.FK_ActivoArchivos_Activos">
+            <End Role="Activos" EntitySet="Activos" />
+            <End Role="ActivoArchivos" EntitySet="ActivoArchivos" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -41,10 +71,16 @@
           <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="FechaAdquisicion" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="ActivoArchivos" Relationship="DB_ControldeActivosModel.FK_ActivoArchivos_Activos" FromRole="Activos" ToRole="ActivoArchivos" />
         </EntityType>
         <EntityContainer Name="DbModels" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Activos" EntityType="Self.Activos" />
           <EntitySet Name="Usuarios" EntityType="DB_ControldeActivosModel.Usuarios" />
+          <EntitySet Name="ActivoArchivos" EntityType="DB_ControldeActivosModel.ActivoArchivos" />
+          <AssociationSet Name="FK_ActivoArchivos_Activos" Association="DB_ControldeActivosModel.FK_ActivoArchivos_Activos">
+            <End Role="Activos" EntitySet="Activos" />
+            <End Role="ActivoArchivos" EntitySet="ActivoArchivos" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Usuarios">
           <Key>
@@ -55,6 +91,32 @@
           <Property Name="Contrasena" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Rol" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
+        <EntityType Name="ActivoArchivos">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdActivo" Type="Int32" Nullable="false" />
+          <Property Name="NombreArchivo" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TipoArchivo" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ExtArchivo" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="TamanoArchivo" Type="Int32" Nullable="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="RutaArchivo" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Activos" Relationship="DB_ControldeActivosModel.FK_ActivoArchivos_Activos" FromRole="ActivoArchivos" ToRole="Activos" />
+        </EntityType>
+        <Association Name="FK_ActivoArchivos_Activos">
+          <End Type="DB_ControldeActivosModel.Activos" Role="Activos" Multiplicity="1" />
+          <End Type="DB_ControldeActivosModel.ActivoArchivos" Role="ActivoArchivos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activos">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ActivoArchivos">
+              <PropertyRef Name="IdActivo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -79,6 +141,20 @@
                 <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
                 <ScalarProperty Name="Usuario" ColumnName="Usuario" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ActivoArchivos">
+            <EntityTypeMapping TypeName="DB_ControldeActivosModel.ActivoArchivos">
+              <MappingFragment StoreEntitySet="ActivoArchivos">
+                <ScalarProperty Name="RutaArchivo" ColumnName="RutaArchivo" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="TamanoArchivo" ColumnName="TamanoArchivo" />
+                <ScalarProperty Name="ExtArchivo" ColumnName="ExtArchivo" />
+                <ScalarProperty Name="TipoArchivo" ColumnName="TipoArchivo" />
+                <ScalarProperty Name="NombreArchivo" ColumnName="NombreArchivo" />
+                <ScalarProperty Name="IdActivo" ColumnName="IdActivo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

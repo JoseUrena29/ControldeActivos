@@ -1,12 +1,21 @@
-﻿using Proyecto_ControldeActivos.Models;
+﻿using Antlr.Runtime.Misc;
+using Proyecto_ControldeActivos.Helpers;
+using Proyecto_ControldeActivos.Models;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace Proyecto_ControldeActivos.Controllers
 {
     public class ActivosController : Controller
     {
+
+        private readonly string _uploadPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot", "uploads");
+
+
         public ActionResult CheckRol()
         {
             var username = Session["Username"];
@@ -25,6 +34,75 @@ namespace Proyecto_ControldeActivos.Controllers
             }
 
             return null;
+        }
+
+        public ActionResult UploadImage(int id)
+        {
+            FileUploadActivoViewModel imageUploadViewModel = new FileUploadActivoViewModel();
+            imageUploadViewModel.IdActivo = id;
+            return View(imageUploadViewModel);
+        }
+
+
+        [HttpPost]
+        public ActionResult UploadImage(FileUploadActivoViewModel model)
+        {
+
+            ViewBag.MessageError = null;
+            ViewBag.MessageSuccess = null;
+            ViewBag.FilePath = null;
+
+            string filePath =  null;
+            try
+            {
+                if (model.IdActivo == 0)
+                {
+                    ViewBag.MessageError = "No hay activo seleccionado.";
+                    return View();
+                }
+                if (model.FileB64 == null || model.FileB64.Length < 100) {
+                    ViewBag.MessageError = "Se debe seleccionar el archivo!";
+                    return View();
+                }
+
+                //  Crea el directorio si no existe
+                if (!Directory.Exists(_uploadPath))
+                {
+                    Directory.CreateDirectory(_uploadPath);
+                }
+                string fileName = Guid.NewGuid().ToString() + '.' + model.FileExt;
+                filePath = Path.Combine(_uploadPath, fileName);
+            
+                FileHelper.SaveBase64ToFile(model.FileB64, filePath);
+                string finalPathInServer = filePath.Replace(AppDomain.CurrentDomain.BaseDirectory, "/");
+
+                ActivoArchivos achivoActivo = new ActivoArchivos();
+                achivoActivo.IdActivo = model.IdActivo;
+                achivoActivo.FechaCreacion = DateTime.Now;
+                achivoActivo.NombreArchivo = model.FileName;
+                achivoActivo.TamanoArchivo = model.FileSize;
+                achivoActivo.TipoArchivo = model.FileMimeType;
+                achivoActivo.RutaArchivo = finalPathInServer;
+                achivoActivo.ExtArchivo = model.FileExt;
+
+                using (DbModels context = new DbModels())
+                {
+                    context.ActivoArchivos.Add(achivoActivo);
+                    context.SaveChanges();
+                }
+                ViewBag.FilePath = finalPathInServer;
+                ViewBag.MessageSuccess = "Se ha subido el archivo!";
+            }
+            catch (Exception ex)
+            {
+                // Si sucede algún error se elimina el archivo
+                if (filePath != null)
+                {
+                    FileHelper.DeleteFile(filePath);
+                }
+                ViewBag.MessageError = ex.Message;
+            }
+            return View();
         }
 
 
@@ -97,8 +175,10 @@ namespace Proyecto_ControldeActivos.Controllers
         // GET: Activos/Details/5
         public ActionResult Details(int id)
         {
+            ViewBag.Images = new List<ActivoArchivos>();
             using (DbModels context = new DbModels())
             {
+                ViewBag.Images = context.ActivoArchivos.Where(x => x.IdActivo == id).ToList();
                 return View(context.Activos.Where(x=>x.Id == id).FirstOrDefault());
             }
         }

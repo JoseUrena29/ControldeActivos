@@ -7,6 +7,8 @@
       <Diagram DiagramId="2b4ee5c55c0549b49cbaadb414e767d1" Name="Diagram1">
         <EntityTypeShape EntityType="DB_ControldeActivosModel.Activos" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DB_ControldeActivosModel.Usuarios" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DB_ControldeActivosModel.ActivoArchivos" Width="1.5" PointX="3" PointY="5.375" />
+        <AssociationConnector Association="DB_ControldeActivosModel.FK_ActivoArchivos_Activos" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

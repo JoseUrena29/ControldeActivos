@@ -12,11 +12,17 @@ namespace Proyecto_ControldeActivos.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Usuarios
+    public partial class ActivoArchivos
     {
-        public int ID { get; set; }
-        public string Usuario { get; set; }
-        public string Contrasena { get; set; }
-        public string Rol { get; set; }
+        public int Id { get; set; }
+        public int IdActivo { get; set; }
+        public string NombreArchivo { get; set; }
+        public string TipoArchivo { get; set; }
+        public string ExtArchivo { get; set; }
+        public int TamanoArchivo { get; set; }
+        public System.DateTime FechaCreacion { get; set; }
+        public string RutaArchivo { get; set; }
+    
+        public virtual Activos Activos { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Detalles del Activo";
+    var images = ViewBag.Images as List<Proyecto_ControldeActivos.Models.ActivoArchivos>;
 }
 
 <div class="container mt-4 animate__animated animate__fadeInUp">
@@ -35,7 +36,36 @@
                     </p>
                 </div>
             </div>
+            <hr class="my-5"/>
+            <!-- Images -->
+            <div>
+                <h4 class="text-primary text-center">Imagenes</h4>
+                <hr />
+
+                <div class="overflow-auto w-100 d-flex flex-row gap-5" style="max-height: 450px; min-height: 450px; scroll-snap-type: x mandatory;">
+                    @for (int i = 0; i < images.Count; i++)
+                    {
+                        var image = images[i];
+                        <div class="card"
+                             style="min-width: 400px; max-width: 400px; scroll-snap-align: center;
+                            @if (i == 0) { <text>margin-left: 100vh;</text> }
+                            @if (i == images.Count-1) { <text>margin-right: 100vh;</text> }
+                        ">
+                            <div class="card-body d-flex justify-content-center align-items-center h-100">
+                                <img src="@Url.Content(image.RutaArchivo)" class="d-block w-100" style="object-fit: contain;" alt="Image @image.Id">
+                            </div>
+                            <div class="card-footer">
+                                <h5>@image.NombreArchivo</h5>
+                                <p>Subida el: @image.FechaCreacion.ToString("yyyy-MM-dd")</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </div>
         </div>
+
+
         <div class="card-footer text-center">
             <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning">
                 <i class="bi bi-pencil"></i> Editar
