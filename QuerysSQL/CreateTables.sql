@@ -5,7 +5,7 @@ GO
 USE DB_ControldeActivos
 
 GO
-
+-- Tabla de Activos
 CREATE TABLE Activos (
     Id INT PRIMARY KEY IDENTITY(1,1),
     Nombre NVARCHAR(100) NOT NULL,
@@ -14,8 +14,30 @@ CREATE TABLE Activos (
     Estado NVARCHAR(50) NOT NULL
 );
 
+-- Tabla de Archivos de Activo
+CREATE TABLE ActivoArchivos (
+    IdActivo INT NOT NULL,
+    NombreArchivo NVARCHAR(255) NOT NULL,
+	TipoArchivo NVARCHAR(255) NOT NULL,
+	ExtArchivo NVARCHAR(255) NOT NULL,
+	TamanoArchivo INT NOT NULL,
+    FechaCreacion DATE NOT NULL,
+    RutaArchivo NVARCHAR(255) NOT NULL
+);
 
-SELECT * FROM Activos
+ALTER TABLE ActivoArchivos
+Add CONSTRAINT FK_ActivoArchivos_Activos
+FOREIGN KEY (IdActivo)
+REFERENCES Activos(ID);
+
+
+-- Tabla de usuarios
+CREATE TABLE Usuarios (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Usuario NVARCHAR(100) NOT NULL,
+    Contrasena NVARCHAR(100) NOT NULL,
+    Rol NVARCHAR(50) NOT NULL
+);
 
 
 INSERT INTO Activos (Nombre, Descripcion, FechaAdquisicion, Estado)
