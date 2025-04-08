@@ -130,8 +130,8 @@ namespace Proyecto_ControldeActivos.Controllers
         // GET: Activos
         public ActionResult Index(string searchString, string status, DateTime? startDate, DateTime? endDate)
         {
-            var result = CheckRol();
-            if (result != null) return result;
+            //var result = CheckRol();
+            //if (result != null) return result;
 
             using (DbModels context = new DbModels())
             {
@@ -175,6 +175,9 @@ namespace Proyecto_ControldeActivos.Controllers
         // GET: Activos/Details/5
         public ActionResult Details(int id)
         {
+            var result = CheckRol();
+            if (result != null) return result;
+
             ViewBag.Images = new List<ActivoArchivos>();
             using (DbModels context = new DbModels())
             {
