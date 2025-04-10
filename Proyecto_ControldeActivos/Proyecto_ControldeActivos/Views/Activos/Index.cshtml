@@ -23,6 +23,7 @@
                     <option value="">Todos</option>
                     <option value="Activo" @(ViewBag.Status == "Activo" ? "selected" : "")>Activo</option>
                     <option value="Inactivo" @(ViewBag.Status == "Inactivo" ? "selected" : "")>Inactivo</option>
+                    <option value="En Mantenimiento" @(ViewBag.Status == "En Mantenimiento" ? "selected" : "")>En Mantenimiento</option>
                 </select>
                 <input type="date" name="startDate" value="@ViewBag.StartDate" class="form-control me-2" />
                 <input type="date" name="endDate" value="@ViewBag.EndDate" class="form-control me-2" />
