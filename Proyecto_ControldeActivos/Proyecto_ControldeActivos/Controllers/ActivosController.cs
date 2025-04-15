@@ -38,13 +38,18 @@ namespace Proyecto_ControldeActivos.Controllers
 
         public ActionResult UploadImage(int id)
         {
-            var result = CheckRol();
-            if (result != null) return result;
+           
+                var result = CheckRol();
+                if (result != null) return result;
 
-            FileUploadActivoViewModel imageUploadViewModel = new FileUploadActivoViewModel();
-            imageUploadViewModel.IdActivo = id;
-            return View(imageUploadViewModel);
+                FileUploadActivoViewModel imageUploadViewModel = new FileUploadActivoViewModel();
+                imageUploadViewModel.IdActivo = id;
+                return View(imageUploadViewModel);
+          
+            
+
         }
+
 
 
         [HttpPost]
