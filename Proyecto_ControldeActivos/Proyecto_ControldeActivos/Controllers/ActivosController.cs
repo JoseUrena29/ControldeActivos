@@ -287,6 +287,11 @@ namespace Proyecto_ControldeActivos.Controllers
             {
                 using (DbModels context = new DbModels())
                 {
+                     context.ActivoArchivos. Where(x => x.IdActivo == id);
+                    // Elimina Archivos Activo
+                    List<ActivoArchivos> archivosActivo = context.ActivoArchivos.Where(x => x.IdActivo == id).ToList();
+                    archivosActivo.ForEach((itemArchivo) => context.ActivoArchivos.Remove(itemArchivo));
+
                     Activos activo = context.Activos.Where(x =>x.Id == id).FirstOrDefault();
                     context.Activos.Remove(activo);
                     context.SaveChanges();
